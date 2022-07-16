@@ -32,6 +32,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late WebSocketChannel channel;
 
+  int? _counter;
+
   @override
   void initState() {
     super.initState();
@@ -39,8 +41,8 @@ class _MyHomePageState extends State<MyHomePage> {
       Uri.parse('ws://localhost:8080/ws'),
     );
 
-    channel.stream.listen((event) { 
-      debugPrint('$event');
+    channel.stream.listen((value) {
+      setState(() => _counter = int.parse(value));
     });
   }
 
@@ -68,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '',
+              _counter?.toString() ?? '?',
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
